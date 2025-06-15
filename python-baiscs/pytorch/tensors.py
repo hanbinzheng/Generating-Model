@@ -1,94 +1,130 @@
+# PyTorch Tensor 基础用法与操作汇总
+# 本文件整理并标注了你今日用到的所有 PyTorch 知识点，包括张量创建、属性、索引、变换、拼接与切分、广播、矩阵乘法、以及统计函数等。
+
 import torch
-import math
 import numpy as np
 
-'''
-https://docs.pytorch.org/tutorials/beginner/basics/tensor_tutorial.html
-'''
+# ======== Tensor 的创建方式 ========
+# 从 Python 数据直接创建
+x_data = torch.tensor([[1, 2], [3, 4]])
 
-# directly from the data
-data = [[1, 2], [3, 4]]
-x_data = torch.tensor(data)
-print(f"From the data directly: \n{x_data}\n")
-
-# from a numpy array
-np_array = np.array(data)
+# 从 numpy 数组创建（共享内存）
+np_array = np.array([[1, 2], [3, 4]])
 x_np = torch.from_numpy(np_array)
-print(f"From a numpy arrya: \n{x_np}\n")
 
-# 
-x_ones = torch.ones_like(x_data)
-print(f"Ones Tensor: \n{x_ones} \n")
+# 从另一个 tensor 派生（拷贝 shape 或 dtype）
+x_ones = torch.ones_like(x_data)                     # 创建全 1，shape 相同
+torch.rand_like(x_data, dtype=torch.float)          # 随机值填充，指定 dtype
 
-x_rand = torch.rand_like(x_data, dtype=torch.float)
-print(f"Random Tensor: \n{x_rand} \n")
+# ======== Tensor 的属性 ========
+torch.tensor(7).shape                               # 0-D tensor
+torch.tensor([1, 2, 3]).shape                       # 1-D
+torch.tensor([[1], [2], [3]]).shape                 # 2-D
+torch.rand(4, 3, 2).shape                           # 高维
 
-# shape is a tuple of tensor dimensions
-shape = (2, 3,)
-rand_tensor = torch.rand(shape)
-ones_tensor = torch.ones(shape)
-zeros_tensor = torch.zeros(shape)
+# tensor 的设备与类型
+x = torch.tensor([1])
+x = x.to('cuda')                                    # 转到 GPU
+x.device, x.dtype
 
-print(f"Random Tensor:\n{rand_tensor}\n")
-print(f"Ones Tensor: \n{ones_tensor}\n")
-print(f"Zeros Tensor:\n{zeros_tensor}\n")
+# 快速创建函数（指定 shape 和类型）
+torch.rand((2, 3))
+torch.ones((2, 3), dtype=torch.int)
+torch.zeros((2, 3), dtype=torch.float)
 
-# Tensor qttributes describe their shape, datatype, and the device
-tensor = torch.rand(3, 4)
+# ======== 索引与切片 ========
+tensor = torch.tensor([[0.00, 0.01, 0.02, 0.03],
+                       [0.10, 0.11, 0.12, 0.13],
+                       [0.20, 0.21, 0.22, 0.23],
+                       [0.30, 0.31, 0.32, 0.33]])
+tensor[0]               # 第一行
+tensor[:, 0]            # 第一列
+tensor[..., -1]         # 最后一列
 
-print(f"Shape of the tensor: {tensor.shape}")
-print(f"Datatype of tensor: {tensor.dtype}")
-print(f"Device tensor is stored on: {tensor.device}")
+# 多维索引
+x = torch.tensor([[[1, 2], [3, 4], [5, 6]],
+                  [[7, 8], [9, 10], [11, 12]]])
+x[:, 1, 0]              # 跨 batch 索引
+x[1, :, 1]              # 指定 batch 的多个值
 
-if torch.cuda.is_available():
-    tensor = tensor.to('cuad')
-else:
-    print("\nStupid zhb, you don't have a gpu!")
+# 高维索引示例（4D）
+x = torch.arange(3*4*5*6).reshape(3, 4, 5, 6)
+x[0, :, 1, 4]           # 访问具体元素
+x[:, :, :, 1]           # 所有的第 4 维 index=1
+x.permute(1, 0, 2, 3)   # 维度置换
+x.transpose(0, 1)       # 简化版 transpose
 
-data_0 = [[0.00, 0.01, 0.02, 0.03], [0.10, 0.11, 0.12, 0.13], [0.20, 0.21, 0.22, 0.23], [0.30, 0.31, 0.32, 0.33]]
-data_1 = [[1.00, 1.01, 1.02, 1.03], [1.10, 1.11, 1.12, 1.13], [1.20, 1.21, 1.22, 0.23], [1.30, 1.31, 1.32, 1.33]]
-data_2 = [[2.00, 2.01, 2.02, 2.03], [2.10, 2.11, 2.12, 2.13], [2.20, 2.21, 2.22, 2.23], [2.30, 2.31, 2.32, 2.33]]
-tensor = torch.tensor(data_0)
-tensor_1 = torch.tensor(data_1)
-tensor_2 = torch.tensor(data_2)
-print(tensor)
-print('First row: ',tensor[0])
-print('First column: ', tensor[:, 0])
-print('Last column:', tensor[..., -1])
-print()
+# ======== Tensor 变换与操作 ========
+a = torch.ones(2, 3)
+b = torch.zeros(2, 3)
+torch.cat([a, b], dim=0)          # 拼接，纵向
+torch.cat([a, b], dim=1)          # 拼接，横向
+torch.stack([a, b], dim=0)        # 新增一维
 
-t1 = torch.cat([tensor, tensor_1, tensor_2], dim=1)
-print(t1)
-print()
-print()
+torch.split(torch.arange(10), 2)             # 等分切割
+torch.split(torch.arange(10), [3, 4, 3])      # 指定长度切割
 
-# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value
-y1 = tensor @ tensor.T
-y2 = tensor.matmul(tensor.T)
-y3 = torch.rand_like(tensor)
-torch.matmul(tensor, tensor.T, out=y3)
+x = torch.arange(6).reshape(2, 3)
+x.reshape(-1, 2)                              # 自动推理另一维
 
-# This computes the element-wise product. z1, z2, z3 will have the same value
-z1 = tensor * tensor
-z2 = tensor.mul(tensor)
+# squeeze / unsqueeze 去除或添加维度
+y = torch.zeros(1, 2, 1, 3)
+y.squeeze()                                  # 去除所有为 1 的维度
+y.squeeze(0)                                 # 去除指定维度
+z = torch.tensor([1, 2, 3])
+z.unsqueeze(0)                               # shape: (1, 3)
+z.unsqueeze(1)                               # shape: (3, 1)
 
-z3 = torch.rand_like(tensor)
-torch.mul(tensor, tensor, out=z3)
-x1 = tensor @ tensor
+# 综合练习：unsqueeze + stack + reshape + split
+x1 = torch.randn(2, 3).unsqueeze(0)           # shape: (1, 2, 3)
+x2 = torch.randn(2, 3).unsqueeze(0)
+stacked = torch.stack([x1, x2], dim=0)       # shape: (2, 1, 2, 3)
+reshaped = stacked.reshape(2, 6)             # flatten 后重组
+parts = torch.split(reshaped, 3, dim=1)      # 切分
 
-print(x1)
-print(y1)
-print(z1)
+# stack 不同 dim 的含义
+x = torch.arange(2*3*4).reshape(2, 3, 4)
+torch.stack([x[0], x[1]], dim=0)             # shape: (2, 3, 4)
+torch.stack([x[0], x[1]], dim=1)             # shape: (3, 2, 4)
 
+# split 沿 dim=1 分割 3 个 tensor
+parts = torch.split(x, 1, dim=1)
 
-# tensor1 @ tensor2: m * n @ n * p
-# tensor1 @ tensor2.T m * n @ k * n
-# tensor1 * tensor2 m * n  * n * k
+# ======== 张量的算术运算（逐元素） ========
+x = torch.tensor([[1., 2.], [3., 4.]])
+y = torch.tensor([[10., 20.], [30., 40.]])
+x + y
+x - y
+x * y
+x / y
+x ** 2
 
-# tensor1.mul(tensor2) == tensor1 * tensor2
-# tensor1.matmul(tensor2) == tensor1 @ tensor2
+# ======== 广播机制（Broadcasting） ========
+a = torch.tensor([[1.], [2.], [3.]])         # shape: (3,1)
+b = torch.tensor([10., 20.])                # shape: (2,) -> broadcast
+broadcast_sum = a + b                       # 输出 shape: (3,2)
 
-agg = tensor.sum()
-print(agg)
-agg_item = agg.item()
-print(agg_item, type(agg_item))
+# ======== 矩阵乘法（Matmul） ========
+A = torch.tensor([[1., 2.], [3., 4.]])
+B = torch.tensor([[5., 6.], [7., 8.]])
+A @ B
+
+# batch 矩阵乘法（bmm）
+X = torch.randn(3, 2, 4)
+Y = torch.randn(3, 4, 5)
+Z = torch.bmm(X, Y)                          # shape: (3, 2, 5)
+
+# 错误示例：维度不匹配报错
+try:
+    torch.mm(torch.randn(2, 3), torch.randn(4, 2))
+except RuntimeError as e:
+    print("RuntimeError:", e)
+
+# ======== 统计函数：sum / mean 等 ========
+x = torch.tensor([[1.0, 2.0, 3.0],
+                  [4.0, 5.0, 6.0]])
+x.sum()                                      # 所有元素和
+x.sum(dim=0)                                 # 每列求和
+x.sum(dim=1, keepdim=True)                   # 每行求和并保留维度
+x.mean(), x.mean(dim=1)
+
