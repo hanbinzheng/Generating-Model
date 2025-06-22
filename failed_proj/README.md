@@ -22,7 +22,7 @@ checkerboard:
 
 ![unable to show the checkerboard](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/checker-board.png)
 
-由于我不会画图，也不会生成数据，这些数据点是由gemini根据mit lab里的sampleable class改编的。
+由于我不会画图，也不会生成数据，这些数据是由gemini根据mit lab里的sampleable class改编的。
 
 
 
@@ -42,15 +42,15 @@ checkerboard:
 
 ## 问题：
 
-- 模型不收敛： 该模型在训练过程中损失函数持续震荡且有增大的趋势。
-- 随着训练次数的增加，模型生成的图像会逐渐退化为二维高斯噪声。
-  - 对于 `stretched_gaussian` 目标，模型在训练50次时表现尚可?随后趋于高斯噪声。1000次能辨认，再多没有试过。
-  - 对于 `moons`, `circles`, `checker board` 等目标，模型在训练100-1000次时已基本变为高斯噪声，在5-15次训练时偶尔能有勉强可接受的表现。
+> 这个模型根本不具备稳定，正确训练-生成的能力，能生成图像纯粹是瞎猫碰上死耗子
+
+- 模型不收敛： 该模型在训练过程中损失函数持续震荡且稳定增大。
+- 随着训练次数的增加，模型生成的图像会逐渐变为二维高斯噪声。
+  - 对于 `stretched_gaussian` 目标，模型在训练50次时表现还行?但是会趋于高斯噪声。1000次能辨认，再多没有试过。
+  - 对于 `moons`, `circles`, `checker board` 等目标，模型在训练1000次时已基本变为高斯噪声，在5-15次训练时偶尔能有勉强可接受的表现，100次勉强能辨认。
 
 
 经过毫无章法的到处试参数，最终得到稍微能看一点的结果如下：
-
-总而言之，这个模型根本不具备稳定，正确训练-生成的能力，能生成图像纯粹是瞎猫碰上死耗子
 
 moon:
 
@@ -68,3 +68,4 @@ stretched-gaussian
 
 ![stretched-gaussian](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/StretchedGaussian.png)
 
+反正这个lab是没做成功，弄几张运气好做出来的图片安慰一下自己
