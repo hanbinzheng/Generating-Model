@@ -2,25 +2,24 @@
 
 标准二维高斯噪声图片：
 
-![unable to show the standard gaussian noise](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/std-gaussian.png)
-
+![unable to show the standard gaussian noise](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/std-gaussian.png)
 希望生成的图片
 
 moons
 
-![unable to show the moons](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/moons.png)
+![unable to show the moons](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/moons.png)
 
 stretched-gaussian
 
-![unable to show the stretched gaussian](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/stretched-gaussian.png)
+![unable to show the stretched gaussian](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/stretched-gaussian.png)
 
 circles:
 
-![unable to show the circles](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/circles.png)
+![unable to show the circles](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/circles.png)
 
 checkerboard:
 
-![unable to show the checkerboard](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/checker-board.png)
+![unable to show the checkerboard](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/checker-board.png)
 
 由于我不会画图，也不会生成数据，这些数据是由gemini根据mit lab里的sampleable class改编的。
 
@@ -54,18 +53,18 @@ checkerboard:
 
 moon:
 
-![moons](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/Moon.png)
+![moons](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/Moon.png)
 
 circle:
 
-![circle](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/Circle.png)
+![circle](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/Circle.png)
 
 checkerboard:
 
-![checkerboard](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/Checkerboard.png)
+![checkerboard](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/Checkerboard.png)
 
 stretched-gaussian
 
-![stretched-gaussian](https://github.com/hanbinzheng/generating-model/blob/main/failed_proj/images/StretchedGaussian.png)
+![stretched-gaussian](https://github.com/hanbinzheng/generating-model/blob/main/small_project/flow_matching_toy/failed_proj/images/StretchedGaussian.png)
 
 反正这个lab是没做成功，弄几张运气好做出来的图片安慰一下自己
