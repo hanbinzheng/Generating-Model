@@ -1,7 +1,5 @@
 # flow-matching 小demo
 
-> 从二维的高斯学`stretched-gaussian`, `moons`, `checker-board`, `circles` 等简单图像
-
 这个小lab的是从lab2改编的，用于模拟真实的生成场景
 
 ## 流程：
