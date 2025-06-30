@@ -2,3 +2,32 @@
 .ipynb_checkpoints
 .vscode
 .venv
+
+# === 数据集文件 ===
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# === PyTorch / Tensorflow 模型权重 ===
+*.pt
+*.pth
+*.ckpt
+*.h5
+
+# === Jupyter Notebook 的隐藏缓存 ===
+.ipynb_checkpoints/
+
+# === 临时数据目录（比如 torchvision.datasets 下载用） ===
+__pycache__/
+*.pyc
+.DS_Store
+data*/
+datasets/
+cache/
+
+# 忽略任何叫 data*/datasets*/cache*/等常见下载目录
+**/data*/
+**/datasets/
+**/cache/
